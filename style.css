@@ -1,0 +1,94 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+/*  Cabecera y Buscador */
+header {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 32px;
+    text-align: center;
+}
+
+.search-container {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#searchInput {
+    padding: 10px;
+    width: 300px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+#Boton1 {
+    padding: 10px 20px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#Boton1:hover {
+    background-color: #b20710;
+}
+
+/* Contenedor Principal  */
+main {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Contenedor de Películas con flex */
+.contenedor-peliculas {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 25px;
+}
+
+/*  Estilo de cada Película  */
+.pelicula {
+    width: 220px; 
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: linear 0.3s;
+}
+
+.pelicula:hover {
+    transform: scale(1.05);
+}
+
+.pelicula img {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+}
+
+.pelicula h3 {
+    font-family: 'Roboto', sans-serif;
+    padding: 15px;
+    font-size: 18px;
+}
