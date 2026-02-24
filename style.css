@@ -11,24 +11,31 @@ body {
     color: #333;
 }
 
-/*  Cabecera y Buscador */
+/* Cabecera y Buscador */
 header {
     background-color: #1a1a1a;
     color: white;
-    padding: 32px;
-    text-align: center;
+    padding: 20px 32px; 
+}
+
+/* Nuevo contenedor para separar logo de controles */
+.header-content {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .search-container {
-    margin-top: 16px;
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    align-items: center;
+    gap: 15px; /* Espacio entre input, botón buscar y botón generales */
 }
 
 #searchInput {
     padding: 10px;
-    width: 300px;
+    width: 250px; /* Un poco más estrecho para que quepa todo bien */
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -51,6 +58,22 @@ header {
     background-color: #b20710;
 }
 
+/* Estilo para tu nuevo enlace de Películas Generales */
+.boton-nav {
+    text-decoration: none;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 9px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.boton-nav:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
 /* Contenedor Principal  */
 main {
     padding: 32px;
@@ -66,7 +89,7 @@ main {
     gap: 25px;
 }
 
-/*  Estilo de cada Película  */
+/* Estilo de cada Película  */
 .pelicula {
     width: 220px; 
     background-color: white;
