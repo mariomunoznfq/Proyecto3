@@ -1,55 +1,50 @@
-const API_KEY = 'af01d373'; 
-const inputBuscador = document.getElementById('searchInput');
-const botonBuscar = document.getElementById('Boton1');
-const contenedorResultados = document.querySelector('.contenedor-peliculas');
+const API_KEY = '7ce7960e'; 
 
+    const botonBuscar = document.getElementById('btn-buscar');
+    const inputBusqueda = document.getElementById('input-busqueda');
+    const contenedor = document.getElementById('contenedor-peliculas');
 
-async function buscarPeliculas() {
-    const titulo = inputBuscador.value;
-
-    //Validación inicial
-    if (titulo.trim() === '') {
-        alert('No se ha introducido ninguna película');
-        return; 
-    }
-
-    console.log("Buscando la película:", titulo);
-
-    try {
-        //Petición a la API
-        const url = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${titulo}`;
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
-
-        //Limpiar pantalla
-        contenedorResultados.innerHTML = '';
-
-        if (datos.Response === "True") {
-            // Mostrar los resultados
-            datos.Search.forEach(pelicula => {
-                const tarjetaHtml = `
-                    <div class="pelicula">
-                        <img 
-                            src="${pelicula.Poster !== 'N/A' ? pelicula.Poster : 'img2.jpg'}" 
-                            onerror="this.onerror=null; this.src='img2.jpg';" 
-                            alt="${pelicula.Title}"
-                        >
-                        <h3>${pelicula.Title}</h3>
-                        <p style="padding-bottom: 10px; color: #666;">${pelicula.Year}</p>
-                    </div>
-                `;
-                contenedorResultados.innerHTML += tarjetaHtml;
-            });
-        } else {
-            //Esto nos muestra cuando no hya resultados
-            contenedorResultados.innerHTML = `<p style="width: 100%; text-align: center;">No hay peliculas dispoibles con ese titulo "${titulo}".</p>`;
+    async function buscarPeliculas() {
+        const textoCaja = inputBusqueda.value;
+        
+        if (textoCaja.trim() === '') {
+            alert("¡Escribe el nombre de una peli primero!");
+            return;
         }
 
-    } catch (error) {
-        console.error("Error en la petición:", error);
-        alert("Hubo un error al conectar con el servidor.");
+        contenedor.innerHTML = '<p style="color: white; text-align: center;">Buscando en la base de datos mundial...</p>';
+
+        try {
+            const response = await fetch(`https://www.omdbapi.com/?s=${textoCaja}&apikey=${API_KEY}`);
+            const data = await response.json();
+
+            if (data.Response === "True") {
+                contenedor.innerHTML = ''; 
+                
+                data.Search.forEach(pelicula => {
+                    const tarjeta = `
+                        <div class="pelicula">
+                            <img src="${pelicula.Poster !== 'N/A' ? pelicula.Poster : 'https://via.placeholder.com/300x450?text=Sin+Poster'}" alt="${pelicula.Title}">
+                            <h3>${pelicula.Title}</h3>
+                            <p>Año: ${pelicula.Year}</p>
+                        </div>
+                    `;
+                    contenedor.innerHTML += tarjeta;
+                });
+            } else {
+                contenedor.innerHTML = '<p style="color: white; text-align: center;">No hemos encontrado nada con ese nombre.</p>';
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            contenedor.innerHTML = '<p style="color: red; text-align: center;">Error al conectar con OMDb.</p>';
+        }
     }
-}
 
+    // Eventos para el botón y para la tecla Enter
+    botonBuscar.addEventListener('click', buscarPeliculas);
 
-botonBuscar.addEventListener('click', buscarPeliculas);
+    inputBusqueda.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            buscarPeliculas();
+        }
+    });

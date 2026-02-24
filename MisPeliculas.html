@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Colección</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>TuPeliculaFavorita </h1>
+            
+            <div class="search-container" style="margin-top: 15px;">
+                <a href="index.html" class="boton-nav">Buscador</a>
+                <a href="index2.html" class="boton-nav">Recomendados</a>
+                <a href="MisPeliculas.html" class="boton-nav">Mi Colección</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+    
+        <section style="text-align: center; margin-bottom: 40px; background-color: #f9f9f9; padding: 20px; border-radius: 10px; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <h3>Añadir Nueva Película</h3>
+            <form id="formulario-pelicula" style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <input type="text" id="tituloPeli" placeholder="Titulo" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                <input type="number" id="anioPeli" placeholder="Año"  required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 80px;">
+                <input type="url" id="posterPeli" placeholder="URL de la imagen" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 250px;">
+                <button type="submit" class="btn-filtro" style="background-color: #333; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">Guardar </button>
+            </form>
+        </section>
+
+        <div id="contenedor-mis-peliculas" class="contenedor-peliculas">
+            
+        </div>
+    </main>
+
+    <script>
+        const contenedor = document.getElementById('contenedor-mis-peliculas');
+
+        
+        async function cargarMisPeliculas() {
+            contenedor.innerHTML = '<p style="width: 100%; text-align: center;">Cargando tu colección...</p>';
+
+            try {
+                const respuesta = await fetch('http://localhost:3000/api/peliculas');
+                const misPeliculas = await respuesta.json(); 
+
+                contenedor.innerHTML = ''; 
+
+                if (misPeliculas.length === 0) {
+                    contenedor.innerHTML = '<p style="width: 100%; text-align: center;">Aún no tienes películas. ¡Añade la primera arriba!</p>';
+                    return;
+                }
+
+                misPeliculas.forEach(pelicula => {
+                    const tarjeta = `
+                        <div class="pelicula">
+                            <img src="${pelicula.Poster}" onerror="this.src='img2.jpg';" alt="${pelicula.Title}">
+                            <h3>${pelicula.Title}</h3>
+                            <p style="padding-bottom: 10px; color: #666;">Año: ${pelicula.Year}</p>
+                        </div>
+                    `;
+                    contenedor.innerHTML += tarjeta;
+                });
+
+            } catch (error) {
+                console.error("Error conectando:", error);
+                contenedor.innerHTML = '<p style="width: 100%; text-align: center; color: red;">Error: Comprueba que el servidor Node está encendido.</p>';
+            }
+        }
+
+        
+        document.getElementById('formulario-pelicula').addEventListener('submit', async (evento) => {
+            evento.preventDefault(); 
+
+            const nuevaPelicula = {
+                Title: document.getElementById('tituloPeli').value,
+                Year: document.getElementById('anioPeli').value,
+                Poster: document.getElementById('posterPeli').value
+            };
+
+            try {
+                await fetch('http://localhost:3000/api/peliculas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nuevaPelicula) 
+                });
+
+                document.getElementById('formulario-pelicula').reset(); 
+                cargarMisPeliculas(); 
+
+            } catch (error) {
+                console.error("Error guardando:", error);
+                alert("Asegúrate de que el servidor está encendido.");
+            }
+        });
+
+        
+        window.onload = cargarMisPeliculas;
+    </script>
+</body>
+</html>

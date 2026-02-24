@@ -9,14 +9,21 @@
 <body>
 
     <header>
+    <div class="header-content">
         <h1>TuPeliculaFavorita</h1>
-        <div class="header-derecha">
-            <input type="text" id="searchInput" class="searchInput">
-            <button id="Boton1" class="searchButton">Buscar</button>
-            
-            <a href="index2.html" class="boton-nav">Generales</a>
+        
+        <nav style="margin-top: 15px; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px;">
+            <a href="index.html" class="boton-nav">Buscador</a>
+            <a href="index2.html" class="boton-nav">Recomendados</a>
+            <a href="MisPeliculas.html" class="boton-nav">Mi Colección</a>
+        </nav>
+
+        <div class="search-container">
+            <input type="text" id="input-busqueda" placeholder="Buscar película">
+            <button id="btn-buscar">Buscar</button>
         </div>
-    </header>
+    </div>
+</header>
 
     <main>
         <div class="contenedor-peliculas">
@@ -27,6 +34,6 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
