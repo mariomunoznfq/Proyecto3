@@ -20,7 +20,6 @@
     </header>
 
     <main>
-    
         <section style="text-align: center; margin-bottom: 40px; background-color: #f9f9f9; padding: 20px; border-radius: 10px; max-width: 800px; margin-left: auto; margin-right: auto;">
             <h3>Añadir Nueva Película</h3>
             <form id="formulario-pelicula" style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
@@ -39,7 +38,7 @@
     <script>
         const contenedor = document.getElementById('contenedor-mis-peliculas');
 
-        
+        // 1. CARGAR PELÍCULAS
         async function cargarMisPeliculas() {
             contenedor.innerHTML = '<p style="width: 100%; text-align: center;">Cargando tu colección...</p>';
 
@@ -57,9 +56,11 @@
                 misPeliculas.forEach(pelicula => {
                     const tarjeta = `
                         <div class="pelicula">
-                            <img src="${pelicula.Poster}" onerror="this.src='img2.jpg';" alt="${pelicula.Title}">
-                            <h3>${pelicula.Title}</h3>
-                            <p style="padding-bottom: 10px; color: #666;">Año: ${pelicula.Year}</p>
+                            <img src="${pelicula.poster}" onerror="this.onerror=null; this.src='Assets/img2.jpg';" alt="${pelicula.titulo}">
+                            <h3>${pelicula.titulo}</h3>
+                            <p style="padding-bottom: 10px; color: #666;">Año: ${pelicula.anio}</p>
+                            
+                            <button onclick="borrarPelicula(${pelicula.id})" style="background-color: #e50914; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-bottom: 15px; font-weight: bold;">Eliminar</button>
                         </div>
                     `;
                     contenedor.innerHTML += tarjeta;
@@ -71,7 +72,7 @@
             }
         }
 
-        
+        // 2. GUARDAR PELÍCULA DESDE FORMULARIO
         document.getElementById('formulario-pelicula').addEventListener('submit', async (evento) => {
             evento.preventDefault(); 
 
@@ -97,7 +98,25 @@
             }
         });
 
-        
+        // 3. BORRAR PELÍCULA
+        async function borrarPelicula(idPelicula) {
+            if (!confirm("¿Estás seguro de que quieres borrar esta película de tu colección?")) return;
+
+            try {
+                const respuesta = await fetch(`http://localhost:3000/api/peliculas/${idPelicula}`, {
+                    method: 'DELETE'
+                });
+
+                if (respuesta.ok) {
+                    cargarMisPeliculas(); 
+                } else {
+                    alert("Error al intentar borrarla.");
+                }
+            } catch (error) {
+                console.error("Error conectando con el servidor:", error);
+            }
+        }
+
         window.onload = cargarMisPeliculas;
     </script>
 </body>
