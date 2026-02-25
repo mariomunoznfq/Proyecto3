@@ -10,12 +10,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// CONEXIÓN A SUPABASE
 const supabaseUrl = 'https://elpnmbkkyghhcsdljhnz.supabase.co'; 
 const supabaseKey = 'sb_publishable_Z-DC50jbtbjl2c1JnRzmzg_p0nZl43Y'; 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// 1. LEER TODAS LAS PELÍCULAS
 app.get('/api/peliculas', async (req, res) => {
     const { data, error } = await supabase.from('Peliculas').select('*').order('id', { ascending: false });
 
@@ -27,7 +25,6 @@ app.get('/api/peliculas', async (req, res) => {
     res.json(data); 
 });
 
-// 2. GUARDAR UNA PELÍCULA NUEVA
 app.post('/api/peliculas', async (req, res) => {
     const peliRecibida = req.body; 
 
@@ -48,7 +45,6 @@ app.post('/api/peliculas', async (req, res) => {
     res.json({ mensaje: "¡Película guardada perfectamente en Supabase!" });
 });
 
-// 3. BORRAR UNA PELÍCULA (¡La ruta que te faltaba!)
 app.delete('/api/peliculas/:id', async (req, res) => {
     const idPelicula = req.params.id; 
 

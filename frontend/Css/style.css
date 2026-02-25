@@ -1,107 +1,93 @@
-/* Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+
+:root {
+    --fondo-principal: #f4f4f9;
+    --texto-principal: #333333;
+    --fondo-header: rgba(255, 255, 255, 0.7); 
+    --fondo-tarjeta: #ffffff;
+    --sombra-tarjeta: rgba(0, 0, 0, 0.1);
+    --color-acento: #e50914; 
+    --hover-tarjeta: 0px 15px 25px rgba(0, 0, 0, 0.2);
+    --texto-secundario: #666666;
+    --fondo-input: #ffffff;
 }
+
+
+body.dark-mode {
+    --fondo-principal: #121212;
+    --texto-principal: #f0f0f0;
+    --fondo-header: rgba(18, 18, 18, 0.7); 
+    --fondo-tarjeta: #1e1e1e;
+    --sombra-tarjeta: rgba(255, 255, 255, 0.05);
+    --hover-tarjeta: 0px 15px 25px rgba(229, 9, 20, 0.4); 
+    --texto-secundario: #aaaaaa;
+    --fondo-input: #2a2a2a;
+}
+
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
+    background-color: var(--fondo-principal);
+    color: var(--texto-principal);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.4s ease, color 0.4s ease; 
 }
 
-/* Cabecera y Buscador */
 header {
-    background-color: #1a1a1a;
-    color: white;
-    padding: 20px 32px; 
+    background-color: var(--fondo-header);
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
+    position: sticky; 
+    top: 0;
+    z-index: 1000;
+    padding: 20px 0;
+    box-shadow: 0 4px 10px var(--sombra-tarjeta);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Nuevo contenedor para separar logo de controles */
-.header-content {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+.header-content h1 {
+    text-align: center;
+    margin: 0;
+    color: var(--color-acento);
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Espacio entre input, botón buscar y botón generales */
-}
-
-#searchInput {
-    padding: 10px;
-    width: 250px; /* Un poco más estrecho para que quepa todo bien */
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
-}
-
-#Boton1 {
-    padding: 10px 20px;
-    background-color: #e50914;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-#Boton1:hover {
-    background-color: #b20710;
-}
-
-/* Estilo para tu nuevo enlace de Películas Generales */
 .boton-nav {
     text-decoration: none;
-    color: white;
-    border: 1px solid #ccc;
-    padding: 9px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: all 0.3s;
+    color: var(--texto-principal);
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
 }
 
 .boton-nav:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: white;
+    background-color: var(--color-acento);
+    color: white;
 }
 
-/* Contenedor Principal  */
-main {
-    padding: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Contenedor de Películas con flex */
 .contenedor-peliculas {
     display: flex;
-    flex-wrap: wrap; 
-    justify-content: center; 
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 25px;
+    padding: 30px;
 }
 
-/* Estilo de cada Película  */
 .pelicula {
-    width: 220px; 
-    background-color: white;
-    border-radius: 8px;
+    background-color: var(--fondo-tarjeta);
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 220px;
     text-align: center;
-    transition: linear 0.3s;
+    box-shadow: 0 5px 15px var(--sombra-tarjeta);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .pelicula:hover {
-    transform: scale(1.05);
+    transform: translateY(-12px); 
+    box-shadow: var(--hover-tarjeta); 
 }
 
 .pelicula img {
@@ -111,7 +97,33 @@ main {
 }
 
 .pelicula h3 {
-    font-family: 'Roboto', sans-serif;
-    padding: 15px;
-    font-size: 18px;
+    margin: 15px 10px 5px;
+    color: var(--texto-principal);
+    font-size: 1.1em;
+}
+
+.pelicula p {
+    color: var(--texto-secundario);
+    margin-bottom: 15px;
+}
+
+input, select {
+    background-color: var(--fondo-input);
+    color: var(--texto-principal);
+    border: 1px solid var(--texto-secundario);
+    transition: border-color 0.3s ease, background-color 0.4s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--color-acento);
+}
+
+#app-root {
+    animation: aparecer 0.5s ease-out;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
