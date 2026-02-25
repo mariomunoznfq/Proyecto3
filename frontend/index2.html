@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Películas Generales - MovieFinder</title>
+    <link rel="stylesheet" href="Css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>TuPeliculaFavorita </h1>
+            
+            <div class="search-container" style="margin-top: 15px;">
+                <a href=index.html" class="boton-nav">Buscador</a>
+                <a href="index2.html" class="boton-nav">Recomendados</a>
+                <a href="MisPeliculas.html" class="boton-nav">Mi Colección</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section style="text-align: center; margin-bottom: 30px;">
+            
+            <div class="filtros-container" style="margin-top: 20px;">
+                <label for="selector-ano" style="font-weight: bold; margin-right: 10px;">Filtrar por año:</label>
+                <select id="selector-ano" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                    <option value="">Todos los años</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+                <button class="btn-filtro" onclick="filtrarPorAno()">Buscar</button>
+            </div>
+        </section>
+        <div id="contenedor-generales" class="contenedor-peliculas">
+            
+        </div>
+    </main>
+
+    <script>
+        const API_KEY = 'af01d373'; // Tu llave
+        const contenedor = document.getElementById('contenedor-generales');
+
+        async function filtrarPorAno() {
+            //Leemos qué año ha elegido el usuario en el desplegable
+            const anoSeleccionado = document.getElementById('selector-ano').value;
+            
+            // 2. Elegimos una palabra base (obligatorio para esta API)
+            const palabraBase = 'Marvel'; 
+
+            // Ponemos el mensaje de carga
+            contenedor.innerHTML = '<p style="width: 100%; text-align: center;">Buscando películas...</p>';
+            
+            //Si hay año, le añadimos "&y=2023" al final
+            let url = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${palabraBase}&type=movie`;
+            if (anoSeleccionado !== '') {
+                url += `&y=${anoSeleccionado}`; // Aquí le inyectamos el filtro de año a la API
+            }
+            
+            try {
+                const respuesta = await fetch(url);
+                const datos = await respuesta.json();
+
+                contenedor.innerHTML = ''; // Limpiamos el mensaje de carga
+
+                if (datos.Response === "True") {
+                    datos.Search.forEach(pelicula => {
+                        const tarjeta = `
+                            <div class="pelicula">
+                                <img 
+                                    src="${pelicula.Poster !== 'N/A' ? pelicula.Poster : 'img2.jpg'}" 
+                                    onerror="this.onerror=null; this.src='img2.jpg';" 
+                                    alt="${pelicula.Title}"
+                                >
+                                <h3>${pelicula.Title}</h3>
+                                <p style="padding-bottom: 10px; color: #666;">Año: ${pelicula.Year}</p>
+                            </div>
+                        `;
+                        
+                        contenedor.innerHTML += tarjeta;
+                    });
+                } else {
+                    contenedor.innerHTML = '<p style="width: 100%; text-align: center;">No se encontraron películas de ese año.</p>';
+                }
+            } catch (error) {
+                console.error("Error en la API:", error);
+            }
+        }
+
+        // Cargamos todas las pelis por defecto al entrar a la página
+        window.onload = filtrarPorAno;
+    </script>
+</body>
+</html>
