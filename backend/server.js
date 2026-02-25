@@ -32,17 +32,24 @@ app.get('/api/peliculas', async (req, res) => {
 
 // 2. GUARDAR una película nueva (Escribir en Supabase)
 app.post('/api/peliculas', async (req, res) => {
-    const nuevaPelicula = req.body; 
+    const peliRecibida = req.body; 
 
-    // Inserta la nueva película en la tabla 'Peliculas'
-    const { data, error } = await supabase.from('Peliculas').insert([nuevaPelicula]);
+    // TRADUCTOR EXACTO PARA TU SUPABASE
+    const peliculaListaParaSupabase = {
+        titulo: peliRecibida.Title,   
+        anio: parseInt(peliRecibida.Year), // ¡Usamos 'anio' y lo convertimos a número (int8)!
+        poster: peliRecibida.Poster   
+    };
+
+    // Insertamos en tu tabla 'Peliculas'
+    const { data, error } = await supabase.from('Peliculas').insert([peliculaListaParaSupabase]);
 
     if (error) {
-        console.error("Error al guardar en Supabase:", error);
-        return res.status(500).json({ error: 'Error al guardar el dato' });
+        console.error("Error de Supabase:", error); 
+        return res.status(500).json({ error: 'Error al guardar el dato en Supabase' });
     }
 
-    res.json({ mensaje: "Película guardada correctamente" });
+    res.json({ mensaje: "¡Película guardada perfectamente en Supabase!" });
 });
 
 
