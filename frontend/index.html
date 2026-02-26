@@ -12,12 +12,26 @@
         <div class="header-content">
             <h1>TuPeliculaFavorita</h1>
             
-            <nav style="margin-top: 15px; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; align-items: center;">
-                <a href="#buscador" class="boton-nav">Buscador</a>
-                <a href="#recomendados" class="boton-nav">Recomendados</a>
-                <a href="#coleccion" class="boton-nav">Mi Colección</a>
+            <nav style="margin-top: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 0 40px; gap: 15px;">
                 
-                <button id="btn-dark-mode" title="Cambiar tema" style="background: none; border: none; font-size: 1.5em; cursor: pointer; margin-left: 15px; transition: transform 0.3s;">🌙</button>
+                <div style="flex: 1; display: flex; min-width: 150px;"></div>
+
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <a href="#buscador" class="boton-nav">Buscador</a>
+                    <a href="#recomendados" class="boton-nav">Recomendados</a>
+                    <a href="#coleccion" class="boton-nav" id="nav-coleccion" style="display: none;">Mi Colección</a>
+                </div>
+                
+                <div style="flex: 1; display: flex; justify-content: flex-end; gap: 10px; align-items: center;">
+                    <a href="#login" class="boton-nav" id="nav-login" style="border: 1px solid var(--texto-principal);">Iniciar Sesión</a>
+                    <a href="#registro" class="boton-nav" id="nav-registro" style="background-color: var(--color-acento); color: white;">Registrarse</a>
+                    
+                    <span id="info-usuario" style="display: none; font-weight: bold; color: var(--color-acento);"></span>
+                    <button id="btn-logout" style="display: none; background: none; border: 1px solid var(--texto-secundario); color: var(--texto-secundario); padding: 5px 10px; border-radius: 5px; cursor: pointer;">Salir</button>
+
+                    <button id="btn-dark-mode" title="Cambiar tema" style="background: none; border: none; font-size: 1.5em; cursor: pointer; margin-left: 10px; transition: transform 0.3s;">🌙</button>
+                </div>
+
             </nav>
         </div>
     </header>

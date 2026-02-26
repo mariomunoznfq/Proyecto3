@@ -36,3 +36,35 @@ export const vistaColeccion = () => `
     </section>
     <div id="contenedor-mis-peliculas" class="contenedor-peliculas"></div>
 `;
+
+export const vistaLogin = () => `
+    <section style="text-align: center; margin: 40px auto; background-color: var(--fondo-tarjeta); padding: 40px 20px; border-radius: 10px; max-width: 400px; box-shadow: 0 4px 15px var(--sombra-tarjeta);">
+        <h2 style="color: var(--color-acento); margin-bottom: 10px;">¡Hola de nuevo! </h2>
+        <p style="color: var(--texto-secundario); margin-bottom: 25px;">Inicia sesión para ver tu colección.</p>
+        
+        <form id="formulario-login" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="email" id="email-login" placeholder="Tu correo electrónico" required style="padding: 12px; border-radius: 5px;">
+            <input type="password" id="password-login" placeholder="Tu contraseña" required style="padding: 12px; border-radius: 5px;">
+            <button type="submit" style="background-color: var(--texto-principal); color: var(--fondo-principal); padding: 12px; border-radius: 5px; border:none; cursor: pointer; font-weight: bold; font-size: 1.1em;">Entrar</button>
+        </form>
+        <p style="margin-top: 20px; color: var(--texto-secundario);">¿No tienes cuenta? <a href="#registro" style="color: var(--color-acento); font-weight: bold; text-decoration: none;">Regístrate aquí</a></p>
+    </section>
+`;
+
+export const vistaRegistro = () => `
+    <section style="text-align: center; margin: 40px auto; background-color: var(--fondo-tarjeta); padding: 40px 20px; border-radius: 10px; max-width: 400px; box-shadow: 0 4px 15px var(--sombra-tarjeta);">
+        <h2 style="color: var(--color-acento); margin-bottom: 10px;">Crea tu cuenta</h2>
+        <p style="color: var(--texto-secundario); margin-bottom: 25px;">Únete para guardar tus películas favoritas.</p>
+        
+        <form id="formulario-registro" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="nombre-registro" placeholder="Nombre" required style="padding: 12px; border-radius: 5px; flex: 1;">
+                <input type="text" id="apellido-registro" placeholder="Apellido" required style="padding: 12px; border-radius: 5px; flex: 1;">
+            </div>
+            <input type="email" id="email-registro" placeholder="Tu correo electrónico" required style="padding: 12px; border-radius: 5px;">
+            <input type="password" id="password-registro" placeholder="Contraseña (mín. 6 letras)" required style="padding: 12px; border-radius: 5px;">
+            <button type="submit" style="background-color: var(--color-acento); color: white; padding: 12px; border-radius: 5px; border:none; cursor: pointer; font-weight: bold; font-size: 1.1em;">Registrarme</button>
+        </form>
+        <p style="margin-top: 20px; color: var(--texto-secundario);">¿Ya tienes cuenta? <a href="#login" style="color: var(--color-acento); font-weight: bold; text-decoration: none;">Inicia sesión aquí</a></p>
+    </section>
+`;
