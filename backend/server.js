@@ -56,23 +56,49 @@ app.get('/api/peliculas/:email', async (req, res) => {
 });
 
 // 🍿 GUARDAR PELÍCULA
+// 🍿 GUARDAR PELÍCULA (A prueba de bombas)
 app.post('/api/peliculas', async (req, res) => {
-    const peliRecibida = req.body; 
+    try {
+        const peliRecibida = req.body; 
+        console.log("➡️ Intentando guardar esta película:", peliRecibida);
 
-    const peliculaListaParaSupabase = {
-        titulo: peliRecibida.titulo,   
-        anio: parseInt(peliRecibida.anio), 
-        poster: peliRecibida.poster,
-        imdbID: peliRecibida.imdbID || `manual-${Date.now()}`,
-        usuario_email: peliRecibida.usuario_email 
-    };
+        const peliculaListaParaSupabase = {
+            titulo: peliRecibida.titulo,   
+            anio: parseInt(peliRecibida.anio), 
+            poster: peliRecibida.poster,
+            imdbID: peliRecibida.imdbID || `manual-${Date.now()}`,
+            usuario_email: peliRecibida.usuario_email 
+        };
 
-    const { data, error } = await supabase.from('Peliculas').insert([peliculaListaParaSupabase]);
+        const { data, error } = await supabase.from('Peliculas').insert([peliculaListaParaSupabase]);
 
-    if (error) return res.status(500).json({ error: 'Error al guardar el dato' });
-    res.json({ mensaje: "¡Guardada en tu colección personal!" });
+        if (error) {
+            console.log("🚨 ERROR DE SUPABASE AL GUARDAR:", error);
+            return res.status(500).json({ error: 'Error al guardar el dato' });
+        }
+
+        console.log("✅ Película guardada con éxito");
+        res.json({ mensaje: "¡Guardada en tu colección personal!" });
+        
+    } catch (falloGrave) {
+        console.log("💥 FALLO GRAVE EN EL SERVIDOR:", falloGrave);
+        res.status(500).json({ error: 'El servidor ha petado' });
+    }
 });
+// ⭐ MARCAR/DESMARCAR COMO FAVORITO
+app.patch('/api/peliculas/:id/favorito', async (req, res) => {
+    const idPelicula = req.params.id;
+    const { favorito } = req.body; // Recibimos si queremos que sea true o false
 
+    const { error } = await supabase.from('Peliculas').update({ favorito: favorito }).eq('id', idPelicula);
+
+    if (error) {
+        console.log("🚨 ERROR AL ACTUALIZAR FAVORITO:", error);
+        return res.status(500).json({ error: 'Error al actualizar' });
+    }
+    
+    res.json({ mensaje: "¡Estado de favorito actualizado!" });
+});
 // 🍿 BORRAR PELÍCULA
 app.delete('/api/peliculas/:id', async (req, res) => {
     const idPelicula = req.params.id; 

@@ -1,33 +1,36 @@
-import { vistaBuscador, vistaRecomendados, vistaColeccion, vistaLogin, vistaRegistro } from './vistas.js';
-import { buscarPeliculas, cargarRecomendados, cargarColeccion, guardarEnBaseDeDatos, loginUsuario, registrarUsuario } from './api.js';
+import { vistaBuscador, vistaRecomendados, vistaColeccion, vistaLogin, vistaRegistro } from './views.js';
+
+// 📂 Importamos desde los nuevos módulos separados
+import { buscarPeliculas, cargarRecomendados } from './api.js';
+import { cargarColeccion, guardarEnBaseDeDatos } from './collection.js'; // Ahora se llama collection.js
+import { loginUsuario, registrarUsuario } from './auth.js';
 
 const appRoot = document.getElementById('app-root');
 
-// 👤 GESTIÓN DEL MENÚ SEGÚN USUARIO
+// 👤 GESTIÓN DEL MENÚ Y SESIÓN
 const usuarioLogueado = localStorage.getItem('usuarioLogueado');
-const nombreUsuario = localStorage.getItem('nombreUsuario'); // 👈 ¡Recuperamos su nombre!
+const nombreUsuario = localStorage.getItem('nombreUsuario'); 
 
 if (usuarioLogueado) {
     document.getElementById('nav-coleccion').style.display = 'inline-block';
     document.getElementById('nav-login').style.display = 'none';
     document.getElementById('nav-registro').style.display = 'none';
-    
+    g
     const infoUsuario = document.getElementById('info-usuario');
     infoUsuario.style.display = 'inline-block';
-    // Le saludamos por su nombre si lo tiene, si no, usamos el correo como antes
     infoUsuario.textContent = `Hola, ${nombreUsuario || usuarioLogueado.split('@')[0]}`; 
     
     const btnLogout = document.getElementById('btn-logout');
     btnLogout.style.display = 'inline-block';
     btnLogout.onclick = () => {
         localStorage.removeItem('usuarioLogueado');
-        localStorage.removeItem('nombreUsuario'); // 👈 ¡Limpiamos la memoria al salir!
+        localStorage.removeItem('nombreUsuario'); 
         window.location.hash = '#login';
         window.location.reload();
     };
 }
 
-// 🚦 ENRUTADOR
+// 🚦 ENRUTADOR (SPA)
 function enrutador() {
     let ruta = window.location.hash || '#buscador';
     appRoot.innerHTML = '';
@@ -45,28 +48,27 @@ function enrutador() {
             appRoot.innerHTML = vistaRegistro();
             document.getElementById('formulario-registro').onsubmit = (e) => {
                 e.preventDefault(); 
-                // 👈 Ahora recogemos los 4 datos del formulario
-                const nombre = document.getElementById('nombre-registro').value;
-                const apellido = document.getElementById('apellido-registro').value;
-                const email = document.getElementById('email-registro').value;
-                const pass = document.getElementById('password-registro').value;
-                
-                registrarUsuario(email, pass, nombre, apellido); 
+                registrarUsuario(
+                    document.getElementById('email-registro').value, 
+                    document.getElementById('password-registro').value,
+                    document.getElementById('nombre-registro').value,
+                    document.getElementById('apellido-registro').value
+                ); 
             };
             break;
 
         case '#buscador':
             appRoot.innerHTML = vistaBuscador();
-            document.getElementById('btn-buscar').onclick = buscarPeliculas;
+            document.getElementById('btn-buscar').onclick = () => buscarPeliculas(true);
             document.getElementById('input-busqueda').onkeypress = (e) => { 
-                if (e.key === 'Enter') buscarPeliculas(); 
+                if (e.key === 'Enter') buscarPeliculas(true); 
             };
             break;
 
         case '#recomendados':
             appRoot.innerHTML = vistaRecomendados();
-            document.getElementById('btn-filtro-ano').onclick = cargarRecomendados;
-            cargarRecomendados(); 
+            document.getElementById('btn-filtro-ano').onclick = () => cargarRecomendados(true);
+            cargarRecomendados(true); 
             break;
 
         case '#coleccion':
@@ -75,6 +77,15 @@ function enrutador() {
                 return;
             }
             appRoot.innerHTML = vistaColeccion();
+            
+            // ✨ CONFIGURACIÓN DEL FILTRO INTELIGENTE (SIN PARPADEO)
+            const selectorOrden = document.getElementById('orden-coleccion');
+            if (selectorOrden) {
+                // Usamos la nueva función visual que creamos para favoritos
+                selectorOrden.addEventListener('change', window.aplicarFiltroVisual);
+            }
+
+            // Manejo del formulario de añadir peli manual
             document.getElementById('formulario-pelicula').onsubmit = (e) => {
                 e.preventDefault(); 
                 guardarEnBaseDeDatos({
@@ -84,7 +95,8 @@ function enrutador() {
                 });
                 document.getElementById('formulario-pelicula').reset(); 
             };
-            cargarColeccion(); 
+
+            cargarColeccion(); // Carga inicial de la base de datos
             break;
 
         default:
@@ -95,22 +107,32 @@ function enrutador() {
 window.addEventListener('hashchange', enrutador);
 window.addEventListener('load', enrutador);
 
-// 🌙 MODO OSCURO
+// 🌙 MODO OSCURO (Inteligente por horas)
 const btnDarkMode = document.getElementById('btn-dark-mode');
 const body = document.body;
-if (localStorage.getItem('tema') === 'oscuro') {
+
+let temaGuardado = localStorage.getItem('tema');
+
+if (!temaGuardado) {
+    const horaActual = new Date().getHours();
+    temaGuardado = (horaActual >= 20 || horaActual < 7) ? 'oscuro' : 'claro';
+}
+
+if (temaGuardado === 'oscuro') {
     body.classList.add('dark-mode');
     btnDarkMode.textContent = '☀️';
 }
+
 btnDarkMode.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
     btnDarkMode.style.transform = 'rotate(360deg)';
     setTimeout(() => btnDarkMode.style.transform = 'none', 300);
+    
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('tema', 'oscuro');
         btnDarkMode.textContent = '☀️';
     } else {
         localStorage.setItem('tema', 'claro');
         btnDarkMode.textContent = '🌙';
-    }
+    } 
 });

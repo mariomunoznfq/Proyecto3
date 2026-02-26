@@ -6,6 +6,10 @@ export const vistaBuscador = () => `
         </div>
     </div>
     <div id="contenedor-peliculas" class="contenedor-peliculas"></div>
+    
+    <div style="text-align: center; margin: 20px 0 40px;">
+        <button id="btn-ver-mas-buscador" style="display: none; background-color: var(--texto-principal); color: var(--fondo-principal); padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Ver más películas...</button>
+    </div>
 `;
 
 export const vistaRecomendados = () => `
@@ -22,10 +26,13 @@ export const vistaRecomendados = () => `
         </div>
     </section>
     <div id="contenedor-generales" class="contenedor-peliculas"></div>
+    
+    <div style="text-align: center; margin: 20px 0 40px;">
+        <button id="btn-ver-mas-recomendados" style="display: none; background-color: var(--texto-principal); color: var(--fondo-principal); padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Ver más recomendadas...</button>
+    </div>
 `;
-
 export const vistaColeccion = () => `
-    <section style="text-align: center; margin: 20px auto 40px; background-color: var(--fondo-tarjeta); padding: 20px; border-radius: 10px; max-width: 800px; box-shadow: 0 4px 10px var(--sombra-tarjeta);">
+    <section style="text-align: center; margin: 20px auto 30px; background-color: var(--fondo-tarjeta); padding: 20px; border-radius: 10px; max-width: 800px; box-shadow: 0 4px 10px var(--sombra-tarjeta);">
         <h3>Añadir Nueva Película Manual</h3>
         <form id="formulario-pelicula" style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
             <input type="text" id="tituloPeli" placeholder="Titulo" required style="padding: 8px; border-radius: 5px;">
@@ -34,9 +41,34 @@ export const vistaColeccion = () => `
             <button type="submit" style="background-color: var(--texto-principal); color: var(--fondo-principal); padding: 8px 20px; border-radius: 5px; border:none; cursor: pointer;">Guardar</button>
         </form>
     </section>
-    <div id="contenedor-mis-peliculas" class="contenedor-peliculas"></div>
-`;
 
+    <div id="dashboard-estadisticas" class="dashboard-container" style="display: none; margin-bottom: 30px;"></div>
+
+    <div style="width: 100%; display: flex; justify-content: center; margin-bottom: 40px;">
+        <div class="filtro-coleccion-container" style="margin: 0;">
+            <label for="orden-coleccion" class="filtro-label">ORDENAR POR:</label>
+            <select id="orden-coleccion" class="filtro-select">
+                <option value="recientes">✨ Añadidas recientemente</option>
+                <option value="az">🔤 Alfabéticamente (A-Z)</option>
+                <option value="za">🔠 Alfabéticamente (Z-A)</option>
+                <option value="ano-nuevo">📅 Año (Más nuevas primero)</option>
+                <option value="ano-viejo">🎞️ Año (Más antiguas primero)</option>
+                <option value="solo-favoritas">⭐ Solo mis favoritas</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="contenedor-mis-peliculas" class="contenedor-peliculas"></div>
+
+    <div id="modal-info" class="modal-overlay" onclick="cerrarModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
+            <img id="modal-poster" src="" style="max-width: 200px; border-radius: 10px; margin-bottom: 15px;">
+            <h2 id="modal-titulo" style="color: var(--color-acento); margin-bottom: 5px;"></h2>
+            <p id="modal-anio" style="font-weight: bold; margin-bottom: 15px;"></p>
+        </div>
+    </div>
+`;
 export const vistaLogin = () => `
     <section style="text-align: center; margin: 40px auto; background-color: var(--fondo-tarjeta); padding: 40px 20px; border-radius: 10px; max-width: 400px; box-shadow: 0 4px 15px var(--sombra-tarjeta);">
         <h2 style="color: var(--color-acento); margin-bottom: 10px;">¡Hola de nuevo! </h2>
