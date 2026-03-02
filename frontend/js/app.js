@@ -15,7 +15,7 @@ if (usuarioLogueado) {
     document.getElementById('nav-coleccion').style.display = 'inline-block';
     document.getElementById('nav-login').style.display = 'none';
     document.getElementById('nav-registro').style.display = 'none';
-    g
+    
     const infoUsuario = document.getElementById('info-usuario');
     infoUsuario.style.display = 'inline-block';
     infoUsuario.textContent = `Hola, ${nombreUsuario || usuarioLogueado.split('@')[0]}`; 
